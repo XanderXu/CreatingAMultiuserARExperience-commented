@@ -183,8 +183,7 @@ When a device receives data sent by another participant in the multipeer session
 当一个设备从multipeer session中的其他成员接收到数据后,[`session(_:didReceive:fromPeer:)`][40] 代理方法中会拿到这个数据.要使用它,app使用 [`NSKeyedUnarchiver`][41] 来反序列化出一个 [`ARWorldMap`][0] 对象,然后创建并运行一个新的[`ARWorldTrackingConfiguration`][11] ,将反序列化出的地图作为 [`initialWorldMap`][42]:
 
 ``` swift
-if let unarchived = try? NSKeyedUnarchiver.unarchivedObject(of: ARWorldMap.classForKeyedUnarchiver(), from: data),
-    let worldMap = unarchived as? ARWorldMap {
+if let worldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data) {
     
     // Run the session with the received world map.
     // 从接收到的世界地图中启动session.
@@ -249,8 +248,7 @@ When other peers receive data from the multipeer session, they test for whether 
 当其他网络成员从multipeer session中接收到数据,他们测试一下该数据是否包含一个归档的 [`ARAnchor`][15];如果是,则将其解码并添加到他们的session中:
 
 ``` swift
-if let unarchived = try? NSKeyedUnarchiver.unarchivedObject(of: ARAnchor.classForKeyedUnarchiver(), from: data),
-    let anchor = unarchived as? ARAnchor {
+if let anchor = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARAnchor.self, from: data) {
     
     sceneView.session.add(anchor: anchor)
 }
